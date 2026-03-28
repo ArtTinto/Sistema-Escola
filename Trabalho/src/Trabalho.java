@@ -1,8 +1,10 @@
 import java.util.Scanner;
 
 public class Trabalho {
+
+    static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
         int escolha;
 
@@ -29,7 +31,7 @@ public class Trabalho {
                     } while (innerEscolha > 2 || innerEscolha < 0);
 
                     if (innerEscolha == 1) {
-                        Disciplina dadosDisciplina = dadosDisciplina(scanner);
+                        Disciplina dadosDisciplina = dadosDisciplina();
 
                         addDisciplina(allDisiciplinas, dadosDisciplina);
                     } else if (innerEscolha == 2) {
@@ -46,8 +48,9 @@ public class Trabalho {
                         System.out.println("Digite 2 para os alunos de Alunos");
                         innerEscolha = scanner.nextInt();
                     } while (innerEscolha > 2 || innerEscolha < 0);
-                    if (innerEscolha == 1) {
 
+                    if (innerEscolha == 1) {
+                        printaDisiciplinas(allDisiciplinas);
                     } else if (innerEscolha == 2) {
 
                     }
@@ -69,7 +72,7 @@ public class Trabalho {
         // Como o
     }
 
-    static Disciplina dadosDisciplina(Scanner scanner) {
+    static Disciplina dadosDisciplina() {
         Disciplina cadDisiciplina = new Disciplina();
 
         cadDisiciplina.codigoDisiciplina++;
@@ -112,19 +115,74 @@ public class Trabalho {
             for (int i = 0; i < disciplinas.length; i++) {
                 if (disciplinas[i] != null) {
 
-                    System.out.println("Candidato: " + disciplinas[i].codigoDisiciplina);
+                    System.out.println("\nCodigo da Disciplina: " + disciplinas[i].codigoDisiciplina);
 
-                    System.out.println("Nome: " + disciplinas[i].nomeDisciplina);
+                    System.out.println("\nNome: " + disciplinas[i].nomeDisciplina);
 
-                    System.out.println("Sigla: " + disciplinas[i].sigla);
+                    System.out.println("\nSigla: " + disciplinas[i].sigla);
 
-                    System.out.println("Ano disciplina: " + disciplinas[i].anoDisciplina);
+                    System.out.println("\nAno disciplina: " + disciplinas[i].anoDisciplina);
 
-                    System.out.println("Nome do Professor: " + disciplinas[i].nomeProfessor);
+                    System.out.println("\nNome do Professor: " + disciplinas[i].nomeProfessor);
 
                     System.out.println();
                 }
             }
         }
     }
+
+    static void removeDisiciplina(int posicao, Disciplina[] disciplinas) {
+        if (disciplinas == null) {
+            System.out.println("Não há disciplinas cadastradas, impossível remover");
+            return;
+        }
+
+        if (posicao > disciplinas.length || posicao < 0) {
+            System.out.println("Impossível remover, posição inexistente");
+            return;
+        }
+
+        if (disciplinas[posicao - 1] == null) {
+            System.out.println("Impossível remover, essa disciplina não existe");
+            return;
+        }
+
+        disciplinas[posicao - 1] = null;
+
+        for (int i = posicao; i < disciplinas.length - 1; i++) {
+            disciplinas[i] = disciplinas[i + 1];
+        }
+
+        disciplinas[disciplinas.length - 1] = null;
+
+        System.out.println("Disciplina removida com sucesso!");
+    }
+
+    static void alterarDisciplina(int posicao, Disciplina[] disciplinas) {
+        if (disciplinas == null) {
+            System.out.println("Não há disciplinas cadastradas, impossível remover");
+            return;
+        }
+
+        if (posicao > disciplinas.length || posicao < 0) {
+            System.out.println("Impossível remover, posição inexistente");
+            return;
+        }
+
+        if (disciplinas[posicao - 1] == null) {
+            System.out.println("Impossível remover, essa disciplina não existe");
+            return;
+        }
+
+        disciplinas[posicao - 1] = null;
+
+        for (int i = posicao; i < disciplinas.length - 1; i++) {
+            disciplinas[i] = disciplinas[i + 1];
+        }
+
+        disciplinas[disciplinas.length - 1] = dadosDisciplina();
+
+        System.out.println("Disciplina alterada com sucesso!");
+    }
+
 }
