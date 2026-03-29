@@ -1,14 +1,20 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class Trabalho {
 
+    static int contador = 1;
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
 
+        Random random = new Random();
+
         int escolha;
 
         Disciplina allDisiciplinas[] = new Disciplina[100];
+
+        innit(random, allDisiciplinas);
 
         do {
             int innerEscolha; // Inicia a variável a cada ciclo
@@ -59,12 +65,19 @@ public class Trabalho {
 
                 case 3:
                     //
+                    printaDisiciplinas(allDisiciplinas);
+
+                    System.out.println("\nDigite o número da disciplina que quer alterar: ");
+                    innerEscolha = scanner.nextInt();
+
+                    alterarDisciplina(innerEscolha, allDisiciplinas);
                     break;
 
                 case 4:
                     break;
 
                 default:
+                    System.out.println("\nOpção inválida\n");
                     break;
             }
 
@@ -73,30 +86,33 @@ public class Trabalho {
     }
 
     static Disciplina dadosDisciplina() {
+        // Função para receber os dados das disciplinas
         Disciplina cadDisiciplina = new Disciplina();
 
-        cadDisiciplina.codigoDisiciplina++;
+        cadDisiciplina.codigoDisiciplina = contador++;
 
         scanner.nextLine();
 
-        System.out.println("Digite o nome da disciplina");
+        System.out.println("\nDigite o nome da disciplina");
         cadDisiciplina.nomeDisciplina = scanner.nextLine();
 
-        System.out.println("Digite a sigla");
+        System.out.println("\nDigite a sigla");
         cadDisiciplina.sigla = scanner.nextLine();
 
-        System.out.println("Digite o ano da disciplina");
+        System.out.println("\nDigite o ano da disciplina");
         cadDisiciplina.anoDisciplina = scanner.nextInt();
 
         scanner.nextLine();
 
-        System.out.println("Digite o nome do Docente");
+        System.out.println("\nDigite o nome do Docente");
         cadDisiciplina.nomeProfessor = scanner.nextLine();
 
         return cadDisiciplina;
     }
 
     static boolean addDisciplina(Disciplina[] arrDisciplinas, Disciplina objeto) {
+        // Função para adicionar as disciplinas no array de disciplinas Ex
+        // disciplinas[0] = "Banco de dados"; "BD"; ...
         if (arrDisciplinas != null) {
             for (int i = 0; i < arrDisciplinas.length; i++) {
                 if (arrDisciplinas[i] == null) {
@@ -111,54 +127,44 @@ public class Trabalho {
     }
 
     static void printaDisiciplinas(Disciplina[] disciplinas) {
-        if (disciplinas != null) {
-            for (int i = 0; i < disciplinas.length; i++) {
-                if (disciplinas[i] != null) {
+        // Funcao para o Read do CRUD
 
-                    System.out.println("\nCodigo da Disciplina: " + disciplinas[i].codigoDisiciplina);
+        for (int i = 0; i < 123; i++) {
+            System.out.print(
+                    "-");
+        }
+        System.out.println();
 
-                    System.out.println("\nNome: " + disciplinas[i].nomeDisciplina);
+        System.out.printf("| %-7s | %-50s | %-10s | %-5s | %-35s |\n",
+                "Codígo", "Disciplina", "Sigla", "Ano", "Docente");
 
-                    System.out.println("\nSigla: " + disciplinas[i].sigla);
+        for (int i = 0; i < 123; i++) {
+            System.out.print(
+                    "-");
+        }
+        System.out.println();
 
-                    System.out.println("\nAno disciplina: " + disciplinas[i].anoDisciplina);
+        for (int i = 0; i < disciplinas.length; i++) {
+            if (disciplinas[i] != null) {
 
-                    System.out.println("\nNome do Professor: " + disciplinas[i].nomeProfessor);
+                System.out.printf("| %-7d | %-50s | %-10s | %-5d | %-35s |\n",
+                        disciplinas[i].codigoDisiciplina,
+                        disciplinas[i].nomeDisciplina,
+                        disciplinas[i].sigla,
+                        disciplinas[i].anoDisciplina,
+                        disciplinas[i].nomeProfessor);
 
-                    System.out.println();
+                for (int j = 0; j < 123; j++) {
+                    System.out.print(
+                            "-");
                 }
+                System.out.println();
             }
         }
     }
 
-    static void removeDisiciplina(int posicao, Disciplina[] disciplinas) {
-        if (disciplinas == null) {
-            System.out.println("Não há disciplinas cadastradas, impossível remover");
-            return;
-        }
-
-        if (posicao > disciplinas.length || posicao < 0) {
-            System.out.println("Impossível remover, posição inexistente");
-            return;
-        }
-
-        if (disciplinas[posicao - 1] == null) {
-            System.out.println("Impossível remover, essa disciplina não existe");
-            return;
-        }
-
-        disciplinas[posicao - 1] = null;
-
-        for (int i = posicao; i < disciplinas.length - 1; i++) {
-            disciplinas[i] = disciplinas[i + 1];
-        }
-
-        disciplinas[disciplinas.length - 1] = null;
-
-        System.out.println("Disciplina removida com sucesso!");
-    }
-
     static void alterarDisciplina(int posicao, Disciplina[] disciplinas) {
+        //
         if (disciplinas == null) {
             System.out.println("Não há disciplinas cadastradas, impossível remover");
             return;
@@ -174,15 +180,48 @@ public class Trabalho {
             return;
         }
 
-        disciplinas[posicao - 1] = null;
+        disciplinas[posicao - 1] = dadosDisciplina();
 
-        for (int i = posicao; i < disciplinas.length - 1; i++) {
-            disciplinas[i] = disciplinas[i + 1];
-        }
-
-        disciplinas[disciplinas.length - 1] = dadosDisciplina();
-
-        System.out.println("Disciplina alterada com sucesso!");
+        System.out.println("\nDisciplina alterada com sucesso !!");
     }
 
+    static void innit(Random random, Disciplina[] disciplinas) {
+        // Inicializa o vetor de disciplinas com 3 disciplinas que não se repetem com
+        // seus dados sempre fixos exceto o ano que varia por execução e pode repetir
+        String[] nomeDisciplina = { "Banco de Dados", "Arquitetura e Organização de Computadores",
+                "Integração e Séries", "Programação Orientada a Obeto", "Geometria Analíta e Álgebra Linear" };
+
+        String[] sigla = { "BD", "AOC", "IS", "POO", "GAAL" };
+
+        int[] ano = { 2023, 2024, 2025, 2026 };
+
+        String[] docente = { "Marcelo Balbino", "Bruno", "Mateus", "Luciano", "José Jozelmo" };
+
+        for (int i = 0; i < 3; i++) {
+            Disciplina objeto = new Disciplina();
+
+            int sorteado = random.nextInt(5 - i);
+
+            objeto.codigoDisiciplina = contador++;
+
+            objeto.nomeDisciplina = nomeDisciplina[sorteado];
+
+            objeto.sigla = sigla[sorteado];
+
+            objeto.anoDisciplina = ano[random.nextInt(4)];
+
+            objeto.nomeProfessor = docente[sorteado];
+
+            for (int j = sorteado; j < nomeDisciplina.length - 1; j++) {
+                nomeDisciplina[j] = nomeDisciplina[j + 1];
+
+                sigla[j] = sigla[j + 1];
+
+                docente[j] = docente[j + 1];
+            }
+
+            disciplinas[i] = objeto;
+        }
+
+    }
 }

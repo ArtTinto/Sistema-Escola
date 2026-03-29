@@ -1,5 +1,5 @@
 public class Disciplina {
-    int codigoDisiciplina = 0;
+    int codigoDisiciplina;
     String nomeDisciplina;
     String sigla;
     int anoDisciplina;
