@@ -27,6 +27,12 @@ public class Trabalho {
             escolha = scanner.nextInt();
 
             switch (escolha) {
+                case 0:
+                    // Fecha o programa
+                    System.out.println("Fechando o programa ...");
+                    System.exit(0);
+                    break;
+
                 case 1:
                     // Adicionar um aluno ou disciplinas
                     do {
@@ -64,16 +70,25 @@ public class Trabalho {
                     break;
 
                 case 3:
-                    //
+                    // Primeiro printa a todas as disciplinas para saber qual exatamente qual
+                    // código exatamente alterar
                     printaDisiciplinas(allDisiciplinas);
 
-                    System.out.println("\nDigite o número da disciplina que quer alterar: ");
+                    System.out.println("\nDigite o código da disciplina que quer alterar: ");
                     innerEscolha = scanner.nextInt();
 
                     alterarDisciplina(innerEscolha, allDisiciplinas);
                     break;
 
                 case 4:
+                    // Primeiro printa a todas as disciplinas para saber qual exatamente qual
+                    // código exatamente remover
+                    printaDisiciplinas(allDisiciplinas);
+
+                    System.out.println("\nDigite o código da disciplina que quer alterar: ");
+                    innerEscolha = scanner.nextInt();
+
+                    removeDisciplina(innerEscolha, allDisiciplinas);
                     break;
 
                 default:
@@ -82,7 +97,6 @@ public class Trabalho {
             }
 
         } while (escolha != 0);
-        // Como o
     }
 
     static Disciplina dadosDisciplina() {
@@ -127,18 +141,18 @@ public class Trabalho {
     }
 
     static void printaDisiciplinas(Disciplina[] disciplinas) {
-        // Funcao para o Read do CRUD
+        // Funcao para o printar de forma tabelada as disciplinas
 
-        for (int i = 0; i < 123; i++) {
+        for (int i = 0; i < 120; i++) {
             System.out.print(
                     "-");
         }
         System.out.println();
 
-        System.out.printf("| %-7s | %-50s | %-10s | %-5s | %-35s |\n",
+        System.out.printf("| %-7s | %-50s | %-7s | %-5s | %-35s |\n",
                 "Codígo", "Disciplina", "Sigla", "Ano", "Docente");
 
-        for (int i = 0; i < 123; i++) {
+        for (int i = 0; i < 120; i++) {
             System.out.print(
                     "-");
         }
@@ -147,14 +161,14 @@ public class Trabalho {
         for (int i = 0; i < disciplinas.length; i++) {
             if (disciplinas[i] != null) {
 
-                System.out.printf("| %-7d | %-50s | %-10s | %-5d | %-35s |\n",
+                System.out.printf("| %-7d | %-50s | %-7s | %-5d | %-35s |\n",
                         disciplinas[i].codigoDisiciplina,
                         disciplinas[i].nomeDisciplina,
                         disciplinas[i].sigla,
                         disciplinas[i].anoDisciplina,
                         disciplinas[i].nomeProfessor);
 
-                for (int j = 0; j < 123; j++) {
+                for (int j = 0; j < 120; j++) {
                     System.out.print(
                             "-");
                 }
@@ -164,13 +178,51 @@ public class Trabalho {
     }
 
     static void alterarDisciplina(int posicao, Disciplina[] disciplinas) {
+        // Altera a disciplina sobreescrevendo os dados
+        if (disciplinas == null) {
+            System.out.println("Não há disciplinas cadastradas, impossível alterar");
+            return;
+        }
+
+        if (posicao > disciplinas.length || posicao <= 0) {
+            System.out.println("Impossível alterar, posição inexistente");
+            return;
+        }
+
+        if (disciplinas[posicao - 1] == null) {
+            System.out.println("Impossível alterar, essa disciplina não existe");
+            return;
+        }
+
+        Disciplina d = disciplinas[posicao - 1];
+
+        scanner.nextLine();
+
+        System.out.println("\nDigite o nome da disciplina");
+        d.nomeDisciplina = scanner.nextLine();
+
+        System.out.println("\nDigite a sigla");
+        d.sigla = scanner.nextLine();
+
+        System.out.println("\nDigite o ano da disciplina");
+        d.anoDisciplina = scanner.nextInt();
+
+        scanner.nextLine();
+
+        System.out.println("\nDigite o nome do Docente");
+        d.nomeProfessor = scanner.nextLine();
+
+        System.out.println("\nDisciplina alterada com sucesso!!");
+    }
+
+    static void removeDisciplina(int posicao, Disciplina[] disciplinas) {
         //
         if (disciplinas == null) {
             System.out.println("Não há disciplinas cadastradas, impossível remover");
             return;
         }
 
-        if (posicao > disciplinas.length || posicao < 0) {
+        if (posicao > disciplinas.length || posicao <= 0) {
             System.out.println("Impossível remover, posição inexistente");
             return;
         }
@@ -180,9 +232,11 @@ public class Trabalho {
             return;
         }
 
-        disciplinas[posicao - 1] = dadosDisciplina();
+        disciplinas[posicao - 1] = null;
 
-        System.out.println("\nDisciplina alterada com sucesso !!");
+        for (int i = posicao; i < disciplinas.length; i++) {
+            disciplinas[posicao] = disciplinas[posicao + 1];
+        }
     }
 
     static void innit(Random random, Disciplina[] disciplinas) {
