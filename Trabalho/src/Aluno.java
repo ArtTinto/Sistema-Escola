@@ -1,8 +1,8 @@
 public class Aluno {
     int CodigoAluno;
     String nomeAluno;
-    String enderecoAluno;
-    String[] disciplinasMatriculadas = new String[3]; // Exemplo de tamanho
-    int[] notasDisciplinas = new int[3]; 
-    double[] notasFinais = new double[3]; 
+    Endereco endereco = new Endereco();
+    Matricula[] matriculas = new Matricula[10];
+    double rg;
+    int qtdDisciplinas = 0;
 }
