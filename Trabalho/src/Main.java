@@ -35,7 +35,8 @@ public class Main {
             System.out.println("| [3] Atualizar (Editar Dados)             |");
             System.out.println("| [4] Deletar   (Remover Dados)            |");
             System.out.println("| [5] Matricular Aluno em Disciplina       |");
-            System.out.println("| [6] Configurar Largura das Colunas       |");
+            System.out.println("| [6] Listar Matrículas                    |");
+            System.out.println("| [7] Configurar Largura das Colunas       |");
             System.out.println("| [0] Sair do Programa                     |");
             System.out.println("============================================");
             System.out.print("Sua opção > ");
@@ -62,14 +63,23 @@ public class Main {
 
                     if (escolha == 1) {
                         Disciplina dadosDisciplina = dadosDisciplina();
-                        addDisciplina(allDisiciplinas, dadosDisciplina);
-                        System.out.println("\n>>> Disciplina cadastrada com sucesso!");
+                        if (addDisciplina(allDisiciplinas, dadosDisciplina)) {
+                            System.out.println("\n>>> Disciplina cadastrada com sucesso!");
+                        } else {
+                            System.out.println("\n>>> Erro ao cadastrar a disciplina!");
+                        }
 
                     } else if (escolha == 2) {
-                        Aluno dadosAlunos = dadosAlunos(allAlunos);
-                        if (dadosAlunos != null) {
-                            addAluno(allAlunos, dadosAlunos);
-                            System.out.println("\n>>> Aluno cadastrado com sucesso!");
+                        Aluno dadosAlunos = dadosAlunos();
+
+                        if (verificaNomeigual(allAlunos, dadosAlunos)) {
+                            if (addAluno(allAlunos, dadosAlunos)) {
+                                System.out.println("\n>>> Aluno cadastrado com sucesso!");
+                            } else {
+                                System.out.println("\n>>> Erro ao cadastrar o aluno");
+                            }
+                        } else {
+                            System.out.println("\n>>> Alunos com mesmo nome não podem ser cadastrados");
                         }
                     }
                     break;
@@ -163,7 +173,11 @@ public class Main {
                     matricular(allAlunos, allDisiciplinas);
                     break;
 
-                case 6:
+                    case 6:
+                        printaMatriculas(allAlunos);
+                        break;
+
+                case 7:
                     // Configura o tamanho das tabelas
                     System.out.println("\n--- CONFIGURAÇÃO DAS TABELAS ---");
                     do {
@@ -179,7 +193,6 @@ public class Main {
                     System.out.println("\nOpção inválida!");
                     break;
             }
-
             try {
                 Thread.sleep(700);
             } catch (Exception e) {
@@ -277,12 +290,7 @@ public class Main {
         }
 
         if (cdDisciplina > disciplinas.length || cdDisciplina <= 0) {
-            System.out.println("Impossível alterar, posição inexistente");
-            return;
-        }
-
-        if (disciplinas[cdDisciplina - 1] == null) {
-            System.out.println("Impossível alterar, essa disciplina não existe");
+            System.out.println("Impossível alterar, disciplina inexistente");
             return;
         }
 
@@ -293,6 +301,11 @@ public class Main {
                 disc = disciplinas[i];
                 break;
             }
+        }
+
+        if (disc == null) {
+            System.out.println("Impossível alterar, essa disciplina não existe");
+            return;
         }
 
         scanner.nextLine();
@@ -357,7 +370,7 @@ public class Main {
 
         for (int i = indiceEncontrado; i < disciplinas.length - 1; i++) {
             disciplinas[i] = disciplinas[i + 1];
-            
+
             if (disciplinas[i] != null) {
                 disciplinas[i].codigoDisiciplina--;
             }
@@ -369,7 +382,7 @@ public class Main {
     }
 
     // Parte dos Alunos
-    static Aluno dadosAlunos(Aluno[] alunos) {
+    static Aluno dadosAlunos() {
         Aluno cadAluno = new Aluno();
 
         cadAluno.CodigoAluno = contadorAluno++;
@@ -377,17 +390,7 @@ public class Main {
         scanner.nextLine();
 
         System.out.println("\nDigite o nome do Aluno:");
-        String nome = scanner.nextLine().toUpperCase();
-
-        // Não deve ser possível inserir aluno com mesmo nome
-        for (int i = 0; i < alunos.length; i++) {
-            if (alunos[i] != null && alunos[i].nomeAluno.equals(nome)) {
-                System.out.println("Já existe um aluno com este nome!");
-                return null;
-            }
-        }
-
-        cadAluno.nomeAluno = nome;
+        cadAluno.nomeAluno = scanner.nextLine().toUpperCase();
 
         System.out.println("\nDigite o estado do Aluno:");
         cadAluno.endereco.estado = scanner.nextLine();
@@ -405,6 +408,17 @@ public class Main {
         cadAluno.endereco.numero = scanner.nextInt();
 
         return cadAluno;
+    }
+
+    static boolean verificaNomeigual(Aluno[] alunos, Aluno objeto) {
+        // Não deve ser possível inserir aluno com mesmo nome
+        for (int i = 0; i < alunos.length; i++) {
+            if (alunos[i] != null && alunos[i].nomeAluno.equals(objeto.nomeAluno)) {
+                System.out.println("Já existe um aluno com este nome!");
+                return false;
+            }
+        }
+        return true;
     }
 
     static boolean addAluno(Aluno[] arrAluno, Aluno objeto) {
@@ -503,6 +517,8 @@ public class Main {
             System.out.println("Aluno não encontrado");
             return;
         }
+
+        scanner.nextLine();
 
         System.out.println("\nDigite o novo nome do Aluno:");
         aln.nomeAluno = scanner.nextLine().toUpperCase();
@@ -627,6 +643,47 @@ public class Main {
             System.out.println("Matriculado com sucesso!");
         } else {
             System.out.println("Limite de 10 disciplinas atingido.");
+        }
+    }
+
+    static void printaMatriculas(Aluno[] alunos) {
+        int larguraTotal = (larguraColuna * 2) + 7 + 10;
+
+        // Topo da tabela
+        for (int i = 0; i < larguraTotal; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
+
+        // Cabeçalho
+        System.out.printf(
+                "| %-" + larguraColuna + "." + larguraColuna + "s | %-" + larguraColuna + "." + larguraColuna
+                        + "s | %-7s |\n",
+                "ALUNO", "DISCIPLINA", "NOTA");
+
+        for (int i = 0; i < larguraTotal; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
+
+        // Percorre todos os alunos para encontrar matrículas
+        for (int i = 0; i < alunos.length; i++) {
+            if (alunos[i] != null && alunos[i].qtdDisciplinas > 0) {
+                for (int j = 0; j < alunos[i].qtdDisciplinas; j++) {
+                    // Exibe o nome do aluno, o nome da disciplina e a nota final
+                    System.out.printf(
+                            "| %-" + larguraColuna + "." + larguraColuna + "s | %-" + larguraColuna + "."
+                                    + larguraColuna + "s | %-7.2f |\n",
+                            alunos[i].nomeAluno,
+                            alunos[i].matriculas[j].disciplina.nomeDisciplina,
+                            alunos[i].matriculas[j].notaFinal);
+
+                    for (int k = 0; k < larguraTotal; k++) {
+                        System.out.print("-");
+                    }
+                    System.out.println();
+                }
+            }
         }
     }
 
