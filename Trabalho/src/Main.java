@@ -19,6 +19,14 @@ public class Main {
         innit(random, allDisiciplinas, allAlunos);
 
         do {
+            if (allAlunos[allAlunos.length - 1] != null) {
+                allAlunos = expandirVetorAlunos(allAlunos);
+            }
+
+            if (allDisiciplinas[allDisiciplinas.length - 1] != null) {
+                allDisiciplinas = expandirVetorDisciplinas(allDisiciplinas);
+            }
+
             int innerEscolha;
 
             System.out.println("\n============================================");
@@ -157,21 +165,13 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("\nERRO: Opção inválida!");
+                    System.out.println("\nOpção inválida!");
                     break;
             }
 
             try {
                 Thread.sleep(700);
             } catch (Exception e) {
-            }
-
-            if (allAlunos[allAlunos.length - 1] != null) {
-                allAlunos = expandirVetorAlunos(allAlunos);
-            }
-
-            if (allDisiciplinas[allDisiciplinas.length - 1] != null) {
-                allDisiciplinas = expandirVetorDisciplinas(allDisiciplinas);
             }
 
         } while (escolha != 0);
@@ -192,8 +192,10 @@ public class Main {
         System.out.println("\nDigite a sigla");
         cadDisiciplina.sigla = scanner.nextLine().toUpperCase();
         
-        System.out.println("\nDigite o ano da disciplina");
-        cadDisiciplina.anoDisciplina = scanner.nextInt();
+        do {
+            System.out.println("\nDigite o ano da disciplina");
+            cadDisiciplina.anoDisciplina = scanner.nextInt();
+        } while (cadDisiciplina.anoDisciplina < 2000 || cadDisiciplina.anoDisciplina > 2100);
         
         scanner.nextLine();
         
@@ -349,7 +351,7 @@ public class Main {
         // Não deve ser possível inserir aluno com mesmo nome
         for (int i = 0; i < alunos.length; i++) {
             if (alunos[i] != null && alunos[i].nomeAluno.equals(nome)) {
-                System.out.println("ERRO: Já existe um aluno com este nome!");
+                System.out.println("Já existe um aluno com este nome!");
                 return null;
             }
         }
@@ -368,7 +370,7 @@ public class Main {
         System.out.println("\nDigite a rua do Aluno:");
         cadAluno.endereco.rua = scanner.nextLine();
         
-        System.out.println("\nDigite o número do Aluno:");
+        System.out.println("\nDigite o número da residência do Aluno:");
         cadAluno.endereco.numero = scanner.nextInt();
         
         return cadAluno;
@@ -478,7 +480,7 @@ public class Main {
                 System.out.println("\nDigite a nova rua do Aluno:");
                 aluno.endereco.rua = scanner.nextLine().toUpperCase();
                 
-                System.out.println("\nDigite o novo número do Aluno:");
+                System.out.println("\nDigite o novo número da residência do Aluno:");
                 aluno.endereco.numero = scanner.nextInt();
                 
                 scanner.nextLine();
@@ -532,6 +534,8 @@ public class Main {
             }
         } while (codigoDisciplina < 0 || codigoDisciplina >= disciplinas.length);
         
+        scanner.nextLine();
+
         if (alunos[codigoAluno] == null) {
             System.out.println("Este aluno não está cadastrado");
             return;
@@ -548,7 +552,7 @@ public class Main {
         // Verifica se aluno já está na disciplina
         for (int i = 0; i < alu.qtdDisciplinas; i++) {
             if (alu.matriculas[i].disciplina.codigoDisiciplina == dis.codigoDisiciplina) {
-                System.out.println("ERRO: O aluno já está matriculado nesta disciplina!");
+                System.out.println("O aluno já está matriculado nesta disciplina!");
                 return;
             }
         }
