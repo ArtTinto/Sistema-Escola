@@ -173,9 +173,9 @@ public class Main {
                     matricular(allAlunos, allDisiciplinas);
                     break;
 
-                    case 6:
-                        printaMatriculas(allAlunos);
-                        break;
+                case 6:
+                    printaMatriculas(allAlunos);
+                    break;
 
                 case 7:
                     // Configura o tamanho das tabelas
@@ -382,6 +382,7 @@ public class Main {
     }
 
     // Parte dos Alunos
+
     static Aluno dadosAlunos() {
         Aluno cadAluno = new Aluno();
 
@@ -580,43 +581,43 @@ public class Main {
         System.out.println("\nAluno com matrícula " + matricula + " removido com sucesso!!");
     }
 
+    // Parte das Matriculas
+
     static void matricular(Aluno[] alunos, Disciplina[] disciplinas) {
-        int codigoAluno, codigoDisciplina;
+        int codBuscaAluno, codBuscaDisciplina;
 
-        do {
-            System.out.println("Qual o número de matrícula do aluno: ");
-            codigoAluno = scanner.nextInt() - 1;
+        System.out.println("Qual o número de matrícula do aluno: ");
+        codBuscaAluno = scanner.nextInt();
 
-            if (codigoAluno < 0 || codigoAluno >= alunos.length) {
-                System.out.println("Digite um número de matrícula válido");
+        Aluno alu = null;
+        for (int i = 0; i < alunos.length; i++) {
+            if (alunos[i] != null && alunos[i].CodigoAluno == codBuscaAluno) {
+                alu = alunos[i];
+                break;
             }
-        } while (codigoAluno < 0 || codigoAluno >= alunos.length);
+        }
 
-        do {
-            System.out.println("Código da Disciplina: ");
-            codigoDisciplina = scanner.nextInt() - 1;
-
-            if (codigoDisciplina < 0 || codigoDisciplina >= disciplinas.length) {
-                System.out.println("Digite uma disciplina válida");
-            }
-        } while (codigoDisciplina < 0 || codigoDisciplina >= disciplinas.length);
-
-        scanner.nextLine();
-
-        if (alunos[codigoAluno] == null) {
+        if (alu == null) {
             System.out.println("Este aluno não está cadastrado");
             return;
         }
 
-        if (disciplinas[codigoDisciplina] == null) {
+        System.out.println("Código da Disciplina: ");
+        codBuscaDisciplina = scanner.nextInt();
+
+        Disciplina dis = null;
+        for (int i = 0; i < disciplinas.length; i++) {
+            if (disciplinas[i] != null && disciplinas[i].codigoDisiciplina == codBuscaDisciplina) {
+                dis = disciplinas[i];
+                break;
+            }
+        }
+
+        if (dis == null) {
             System.out.println("Essa disciplina não está cadastrada");
             return;
         }
 
-        Aluno alu = alunos[codigoAluno];
-        Disciplina dis = disciplinas[codigoDisciplina];
-
-        // Verifica se aluno já está na disciplina
         for (int i = 0; i < alu.qtdDisciplinas; i++) {
             if (alu.matriculas[i].disciplina.codigoDisiciplina == dis.codigoDisiciplina) {
                 System.out.println("O aluno já está matriculado nesta disciplina!");
@@ -628,7 +629,6 @@ public class Main {
             Matricula mat = new Matricula();
             mat.disciplina = dis;
 
-            // Gera uma nota final aleatória
             mat.notaFinal = random.nextFloat() * 100;
 
             alu.matriculas[alu.qtdDisciplinas] = mat;
@@ -649,13 +649,11 @@ public class Main {
     static void printaMatriculas(Aluno[] alunos) {
         int larguraTotal = (larguraColuna * 2) + 7 + 10;
 
-        // Topo da tabela
         for (int i = 0; i < larguraTotal; i++) {
             System.out.print("-");
         }
         System.out.println();
 
-        // Cabeçalho
         System.out.printf(
                 "| %-" + larguraColuna + "." + larguraColuna + "s | %-" + larguraColuna + "." + larguraColuna
                         + "s | %-7s |\n",
@@ -666,11 +664,9 @@ public class Main {
         }
         System.out.println();
 
-        // Percorre todos os alunos para encontrar matrículas
         for (int i = 0; i < alunos.length; i++) {
             if (alunos[i] != null && alunos[i].qtdDisciplinas > 0) {
                 for (int j = 0; j < alunos[i].qtdDisciplinas; j++) {
-                    // Exibe o nome do aluno, o nome da disciplina e a nota final
                     System.out.printf(
                             "| %-" + larguraColuna + "." + larguraColuna + "s | %-" + larguraColuna + "."
                                     + larguraColuna + "s | %-7.2f |\n",
@@ -686,6 +682,8 @@ public class Main {
             }
         }
     }
+
+    // Funções de controle
 
     static void innit(Random random, Disciplina[] disciplinas, Aluno[] alunos) {
         // DADOS PARA DISCIPLINAS (3 iniciais)
