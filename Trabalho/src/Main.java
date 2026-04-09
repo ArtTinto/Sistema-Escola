@@ -475,7 +475,12 @@ public class Main {
         for (int i = 0; i < total; i++) {
             String listaSiglas = "";
             for (int j = 0; j < copia[i].qtdDisciplinas; j++) {
-                listaSiglas += copia[i].matriculas[j].disciplina.sigla + (j < copia[i].qtdDisciplinas - 1 ? ", " : "");
+                listaSiglas += copia[i].matriculas[j].disciplina.sigla;
+                
+                // Substituição do "if reduzido" (operador ternário) por if padrão
+                if (j < copia[i].qtdDisciplinas - 1) {
+                    listaSiglas += ", ";
+                }
             }
 
             System.out.printf(
@@ -492,7 +497,6 @@ public class Main {
             System.out.println();
         }
     }
-
     static void alterarAluno(int matricula, Aluno[] alunos) {
         // Altera o aluno baseado no seu numero de matricula
         if (alunos == null) {
