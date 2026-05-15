@@ -5,9 +5,6 @@ public class Main {
 
     static Scanner scanner = new Scanner(System.in);
     static Random random = new Random();
-    static int contadorDisiciplina = 1;
-    static int contadorAluno = 1;
-    static int larguraColuna = 40;
 
     public static void main(String[] args) {
 
@@ -62,7 +59,7 @@ public class Main {
                     } while (escolha > 2 || escolha < 0);
 
                     if (escolha == 1) {
-                        Disciplina dadosDisciplina = dadosDisciplina();
+                        Disciplina dadosDisciplina = new Disciplina(null, null);
                         if (addDisciplina(allDisiciplinas, dadosDisciplina)) {
                             System.out.println("\n>>> Disciplina cadastrada com sucesso!");
                         } else {
@@ -199,186 +196,6 @@ public class Main {
                 System.err.println("Erro no timer");
             }
         } while (escolha != 0);
-    }
-
-    static Disciplina dadosDisciplina() {
-        // Função para receber os dados das disciplinas
-        Disciplina cadDisiciplina = new Disciplina();
-
-        cadDisiciplina.codigoDisiciplina = contadorDisiciplina++;
-
-        scanner.nextLine();
-
-        System.out.println("\nDigite o nome da disciplina");
-        cadDisiciplina.nomeDisciplina = scanner.nextLine().toUpperCase();
-
-        System.out.println("\nDigite a sigla");
-        cadDisiciplina.sigla = scanner.nextLine().toUpperCase();
-
-        do {
-            System.out.println("\nDigite o ano da disciplina");
-            cadDisiciplina.anoDisciplina = scanner.nextInt();
-        } while (cadDisiciplina.anoDisciplina < 2000 || cadDisiciplina.anoDisciplina > 2100);
-
-        scanner.nextLine();
-
-        System.out.println("\nDigite o nome do Docente");
-        cadDisiciplina.nomeProfessor = scanner.nextLine().toUpperCase();
-
-        return cadDisiciplina;
-    }
-
-    static boolean addDisciplina(Disciplina[] arrDisciplinas, Disciplina objeto) {
-        // Função para adicionar as disciplinas no array de disciplinas Ex
-        // disciplinas[0] = "Banco de dados"; "BD"; ...
-        if (arrDisciplinas != null) {
-            for (int i = 0; i < arrDisciplinas.length; i++) {
-                if (arrDisciplinas[i] == null) {
-                    arrDisciplinas[i] = objeto;
-
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    static void printaDisiciplinas(Disciplina[] disciplinas) {
-        // Cálculo da largura total fixa para as bordas
-        int larguraTotal = (larguraColuna * 2) + 10 + 7 + 5 + 16;
-
-        for (int i = 0; i < larguraTotal; i++) {
-            System.out.print("-");
-        }
-        System.out.println();
-
-        System.out.printf(
-                "| %-10s | %-" + larguraColuna + "." + larguraColuna + "s | %-7s | %-5s | %-" + larguraColuna + "."
-                        + larguraColuna + "s |\n",
-                "CÓDIGO", "NOME", "SIGLA", "ANO", "PROFESSOR");
-
-        for (int i = 0; i < larguraTotal; i++) {
-            System.out.print("-");
-        }
-        System.out.println();
-
-        for (int i = 0; i < disciplinas.length; i++) {
-            if (disciplinas[i] != null) {
-                // Garante que o texto não ultrapasse a largura configurada
-                System.out.printf(
-                        "| %-10d | %-" + larguraColuna + "." + larguraColuna + "s | %-7s | %-5d | %-" + larguraColuna
-                                + "." + larguraColuna + "s |\n",
-                        disciplinas[i].codigoDisiciplina,
-                        disciplinas[i].nomeDisciplina,
-                        disciplinas[i].sigla,
-                        disciplinas[i].anoDisciplina,
-                        disciplinas[i].nomeProfessor);
-
-                for (int j = 0; j < larguraTotal; j++) {
-                    System.out.print("-");
-                }
-                System.out.println();
-            }
-        }
-    }
-
-    static void alterarDisciplina(int cdDisciplina, Disciplina[] disciplinas) {
-        // Altera a disciplina sobreescrevendo os dados
-        if (disciplinas == null) {
-            System.out.println("Não há disciplinas cadastradas, impossível alterar");
-            return;
-        }
-
-        if (cdDisciplina > disciplinas.length || cdDisciplina <= 0) {
-            System.out.println("Impossível alterar, disciplina inexistente");
-            return;
-        }
-
-        Disciplina disc = null;
-
-        for (int i = 0; i < disciplinas.length; i++) {
-            if (cdDisciplina == disciplinas[i].codigoDisiciplina) {
-                disc = disciplinas[i];
-                break;
-            }
-        }
-
-        if (disc == null) {
-            System.out.println("Impossível alterar, essa disciplina não existe");
-            return;
-        }
-
-        scanner.nextLine();
-
-        System.out.println("\nDigite o nome da disciplina");
-        disc.nomeDisciplina = scanner.nextLine().toUpperCase();
-
-        System.out.println("\nDigite a sigla");
-        disc.sigla = scanner.nextLine().toUpperCase();
-
-        System.out.println("\nDigite o ano da disciplina");
-        disc.anoDisciplina = scanner.nextInt();
-
-        scanner.nextLine();
-
-        System.out.println("\nDigite o nome do Docente");
-        disc.nomeProfessor = scanner.nextLine().toUpperCase();
-
-        System.out.println("\nDisciplina alterada com sucesso!!");
-    }
-
-    static void removeDisciplina(int cdDisciplina, Disciplina[] disciplinas, Aluno[] alunos) {
-        if (disciplinas == null) {
-            System.out.println("Não há disciplinas cadastradas, impossível remover");
-            return;
-        }
-
-        if (cdDisciplina > disciplinas.length || cdDisciplina <= 0) {
-            System.out.println("Impossível remover, posição inexistente");
-            return;
-        }
-
-        if (disciplinas[cdDisciplina - 1] == null) {
-            System.out.println("Impossível remover, essa disciplina não existe");
-            return;
-        }
-
-        int indiceEncontrado = -1;
-
-        for (int i = 0; i < disciplinas.length; i++) {
-            if (disciplinas[i] != null && disciplinas[i].codigoDisiciplina == cdDisciplina) {
-                indiceEncontrado = i;
-                break;
-            }
-        }
-
-        if (indiceEncontrado == -1) {
-            System.out.println("Disciplina não encontrada");
-            return;
-        }
-
-        for (int i = 0; i < alunos.length; i++) {
-            if (alunos[i] != null) {
-                for (int j = 0; j < alunos[i].qtdDisciplinas; j++) {
-                    if (alunos[i].matriculas[j].disciplina.codigoDisiciplina == cdDisciplina) {
-                        System.out.println("Não é possível remover disciplina com aluno matriculado!");
-                        return;
-                    }
-                }
-            }
-        }
-
-        for (int i = indiceEncontrado; i < disciplinas.length - 1; i++) {
-            disciplinas[i] = disciplinas[i + 1];
-
-            if (disciplinas[i] != null) {
-                disciplinas[i].codigoDisiciplina--;
-            }
-        }
-
-        disciplinas[disciplinas.length - 1] = null;
-
-        contadorDisiciplina--;
     }
 
     // Parte dos Alunos
@@ -845,7 +662,7 @@ public class Main {
         for (int i = 0; i < disciplinasAntigo.length; i++) {
             novoVetor[i] = disciplinasAntigo[i];
         }
-
+        
         return novoVetor;
     }
 }

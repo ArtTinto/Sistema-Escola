@@ -1,4 +1,6 @@
+import java.sql.Date;
+
 public class Matricula {
-    Disciplina disciplina;
-    double notaFinal;
+    Date dataMatricula; 
+    Aluno aluno;
 }

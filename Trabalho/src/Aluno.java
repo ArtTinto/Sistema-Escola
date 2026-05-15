@@ -1,8 +1,8 @@
 public class Aluno {
-    int CodigoAluno;
-    String nomeAluno;
-    Endereco endereco = new Endereco();
-    Matricula[] matriculas = new Matricula[10];
-    double rg;
-    int qtdDisciplinas = 0;
+    private static int qtdAlunos = 0;
+    private int CodigoAluno;
+    private String nomeAluno;
+    private double rg;
+    // Endereco endereco;
+    // Matricula[] matriculas = new Matricula[10];
 }
