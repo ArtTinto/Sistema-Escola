@@ -39,7 +39,6 @@ public class Aluno {
         if (novaNota >= 0.0 && novaNota <= 100.0) {
             this.rendimentoGlobal = novaNota;
         } else {
-            // Se a nota for menor que 0 ou maior que 10, o programa bloqueia a ação
             throw new IllegalArgumentException("Nota inválida! O valor deve estar entre 0.0 e 100.0. Valor informado: " + novaNota);
         }
     }
