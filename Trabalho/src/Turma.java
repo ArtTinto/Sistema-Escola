@@ -1,3 +1,5 @@
+package escola;
+
 import java.util.Random;
 
 public class Turma {
@@ -93,6 +95,18 @@ public class Turma {
             for (int i = 0; i < disciplinas.length; i++) {
                 if (disciplinas[i] == null) {
                     disciplinas[i] = disciplina;
+                    Random random = new Random();
+
+                    for (int j = 0; j < matriculas.length; j++) {
+                        if (matriculas[j] != null) {
+                            float notaValor = random.nextFloat() * 100;
+                            Nota.getInstance(disciplina, matriculas[j], notaValor);
+                            
+                            float novoRg = matriculas[j].getAluno().getRg();
+                            novoRg = (novoRg + notaValor) / disciplinas.length;
+                            matriculas[j].atualizaRg(novoRg);
+                        }
+                    }
                     return true;
                 }
             }
@@ -115,10 +129,22 @@ public class Turma {
                     matriculas[i] = matricula;
                     matricula.setTurma(this);
 
+                    float somaNotas = 0;
+                    int qtdDisciplinas = 0;
+
                     for (int j = 0; j < disciplinas.length; j++) {
                         if (disciplinas[j] != null) {
-                            Nota.getInstance(disciplinas[j], matricula, random.nextFloat() * 100);
+                            float notaValor = random.nextFloat() * 100;
+                            Nota.getInstance(disciplinas[j], matricula, notaValor);
+                            somaNotas += notaValor;
+                            qtdDisciplinas++;
                         }
+                    }
+
+                    if (qtdDisciplinas > 0) {
+                        matriculas[i].atualizaRg(somaNotas / qtdDisciplinas);
+                    } else {
+                        matriculas[i].atualizaRg(0f);
                     }
                     return true;
                 }
@@ -161,25 +187,5 @@ public class Turma {
             cloneMatriculas[i] = matriculas[i];
         }
         return cloneMatriculas;
-    }
-
-    public void removeAluno(int matricula, Aluno[] alunos) {
-        int indiceEncontrado = -1;
-        for (int i = 0; i < alunos.length; i++) {
-            if (alunos[i] != null && alunos[i].getCodigoAluno() == matricula) {
-                indiceEncontrado = i;
-                break;
-            }
-        }
-
-        if (indiceEncontrado == -1) {
-            System.out.println("Aluno não encontrado.");
-            return;
-        }
-
-        for (int i = indiceEncontrado; i < alunos.length - 1; i++) {
-            alunos[i] = alunos[i + 1];
-        }
-        alunos[alunos.length - 1] = null;
     }
 }
