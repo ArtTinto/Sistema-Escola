@@ -1,8 +1,10 @@
+
 public class Aluno {
     private static long qtdAlunos = 0;
     private long codigoAluno;
     private String nome;
     private String cpf;
+    private float rg;
     private Matricula matricula;
 
     private Aluno(String nome, String cpf) {
@@ -19,6 +21,7 @@ public class Aluno {
             this.codigoAluno = outro.codigoAluno;
             this.nome = outro.nome;
             this.cpf = outro.cpf;
+            this.rg = outro.rg;
             this.matricula = outro.matricula;
         }
     }
@@ -34,6 +37,8 @@ public class Aluno {
     public void alterar(String nome) {
         this.nome = nome;
     }
+
+    
 
     public long getCodigoAluno() {
         return codigoAluno;
