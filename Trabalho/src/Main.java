@@ -1,3 +1,5 @@
+// Arthur Ferreira e Yuri Espindola
+package escola;
 
 import java.sql.Date;
 import java.util.Scanner;
@@ -14,14 +16,6 @@ public class Main {
         sis.innit();
 
         do {
-            // if (allAlunos[allAlunos.length - 1] != null) {
-            // allAlunos = expandirVetorAlunos(allAlunos);
-            // }
-
-            // if (allDisiciplinas[allDisiciplinas.length - 1] != null) {
-            // allDisiciplinas = expandirVetorDisciplinas(allDisiciplinas);
-            // }
-
             System.out.println("\n============================================");
             System.out.println("|           SISTEMA DE MATRÍCULAS          |");
             System.out.println("============================================");
@@ -57,15 +51,15 @@ public class Main {
 
                     switch (escolha) {
                         case 0:
-                            escolha= -1;
+                            escolha = -1;
                             break;
                         case 1:
                             scanner.nextLine();
                             System.out.println("Qual é o nome da Disciplina");
-                            String nomeDisciplina = scanner.nextLine();
+                            String nomeDisciplina = scanner.nextLine().toUpperCase();
 
                             System.out.println("Qual é o nome do Docente");
-                            String nomeProfessor = scanner.nextLine();
+                            String nomeProfessor = scanner.nextLine().toUpperCase();
 
                             Disciplina disciplina = Disciplina.getInstance(nomeDisciplina, nomeProfessor);
 
@@ -74,10 +68,10 @@ public class Main {
                         case 2:
                             scanner.nextLine();
                             System.out.println("Qual é o nome do Aluno");
-                            String nomeAluno = scanner.nextLine();
+                            String nomeAluno = scanner.nextLine().toUpperCase();
 
                             System.out.println("Qual é o CPF");
-                            String cpf = scanner.nextLine();
+                            String cpf = scanner.nextLine().toUpperCase();
 
                             Aluno aluno = Aluno.getInstance(nomeAluno, cpf);
 
@@ -116,7 +110,7 @@ public class Main {
 
                     switch (escolha) {
                         case 0:
-                            escolha=-1;
+                            escolha = -1;
                             break;
                         case 1:
                             sis.printaDisiciplinas(larguraColuna);
@@ -146,7 +140,7 @@ public class Main {
 
                     switch (escolha) {
                         case 0:
-                            escolha=-1;
+                            escolha = -1;
                             break;
                         case 1:
                             sis.printaDisiciplinas(escolha);
@@ -156,10 +150,10 @@ public class Main {
 
                             scanner.nextLine();
                             System.out.println("Digite o nome a ser alterado");
-                            String nome = scanner.nextLine();
+                            String nome = scanner.nextLine().toUpperCase();
 
                             System.out.println("Digite o nome do Docente a ser alterado");
-                            String nomeDocente = scanner.nextLine();
+                            String nomeDocente = scanner.nextLine().toUpperCase();
                             disc.alterar(nome, nomeDocente);
                             break;
                         case 2:
@@ -170,7 +164,7 @@ public class Main {
 
                             scanner.nextLine();
                             System.out.println("Digite o nome para ser alterado");
-                            nome = scanner.nextLine();
+                            nome = scanner.nextLine().toUpperCase();
                             aluno.alterar(nome);
                             break;
                         case 3:
@@ -209,7 +203,7 @@ public class Main {
 
                     switch (escolha) {
                         case 0:
-                            escolha=-1;
+                            escolha = -1;
                             break;
                         case 1:
                             sis.printaDisiciplinas(larguraColuna);
@@ -270,9 +264,11 @@ public class Main {
                     break;
                 case 6:
                     // Matricular aluno em turma
-                    System.out.println("Qual a data de inscrição");
-                    int data = scanner.nextInt();
-                    Date dateMatricula = new Date(data);
+                    scanner.nextLine();
+                    System.out.println("Qual a data de inscrição (Formato AAAA-MM-DD):");
+                    String dataStr = scanner.nextLine();
+
+                    Date dateMatricula = Date.valueOf(dataStr);
 
                     sis.printaTurmas(larguraColuna);
                     System.out.print("\nDigite o ID da Turma: ");
@@ -287,20 +283,15 @@ public class Main {
                     Matricula matricula = Matricula.getInstance(dateMatricula, aluno);
 
                     turma.addMatricula(matricula);
-
+                    System.out.println("Aluno matriculado com sucesso!");
                     break;
                 case 7:
                     // Configura o tamanho das tabelas
                     System.out.println("\n--- CONFIGURAÇÃO DAS TABELAS ---");
-                    do {
-                        System.out.print("Defina a largura das colunas (Mín 40, Máx 100): ");
-                        larguraColuna = scanner.nextInt();
-                        if (larguraColuna < 40 || larguraColuna > 100)
-                            System.out.println("Valor inválido!");
-                    } while (larguraColuna < 40 || larguraColuna > 100);
+                    System.out.print("Defina a largura das colunas (Mín 40, Máx 100): ");
+                    larguraColuna = scanner.nextInt();
                     System.out.println("Largura atualizada com sucesso!");
                     break;
-
                 default:
                     System.out.println("\nOpção inválida!");
                     break;
