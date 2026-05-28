@@ -1,3 +1,4 @@
+package escola;
 import java.sql.Date;
 
 public class Matricula {
@@ -32,6 +33,12 @@ public class Matricula {
 
     public Aluno getAluno() {
         return Aluno.getInstance(aluno);
+    }
+
+    public void atualizaRg (float novoRg) {
+        if (this.aluno != null) {
+            this.aluno.setRg(novoRg);
+        }
     }
 
     public Turma getTurma() {
