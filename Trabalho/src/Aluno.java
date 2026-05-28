@@ -1,3 +1,4 @@
+package escola;
 
 public class Aluno {
     private static long qtdAlunos = 0;
@@ -38,7 +39,13 @@ public class Aluno {
         this.nome = nome;
     }
 
-    
+    public float getRg() {
+        return rg;
+    }
+
+    public void setRg(float rg) {
+        this.rg = rg;
+    }
 
     public long getCodigoAluno() {
         return codigoAluno;
