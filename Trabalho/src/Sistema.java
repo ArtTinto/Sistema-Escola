@@ -1,3 +1,5 @@
+package escola;
+
 public class Sistema {
     private static Sistema sistema;
     private static Aluno[] allAlunos;
@@ -84,7 +86,7 @@ public class Sistema {
         if (aluno != null) {
             for (int i = 0; i < allAlunos.length; i++) {
                 if (allAlunos[i] != null && allAlunos[i].getCodigoAluno() == aluno.getCodigoAluno()) {
-                    if (aluno.getMatricula() != null) {
+                    if (aluno.getMatricula() == null) {
                         for (int j = i; j < allAlunos.length - 1; j++) {
                             allAlunos[j] = allAlunos[j + 1];
                         }
@@ -114,14 +116,15 @@ public class Sistema {
             for (int i = 0; i < allTurmas.length; i++) {
                 if (allTurmas[i] != null && allTurmas[i].getId() == turma.getId()) {
                     Matricula[] matriculas = turma.getMatriculas();
-                    for (int j = 0; j < matriculas.length; j++) {
-                        if (matriculas[j] != null) {
-                            for (int k = i; k < allTurmas.length - 1; k++) {
-                                allTurmas[k] = allTurmas[k + 1];
-                            }
-                            allTurmas[allTurmas.length - 1] = null;
-                            return true;
+                    if (matriculas[0] != null) {
+                        return false;
+                    } else {
+                        for (int k = i; k < allTurmas.length - 1; k++) {
+                            allTurmas[k] = allTurmas[k + 1];
                         }
+                        allTurmas[allTurmas.length - 1] = null;
+                        return true;
+
                     }
                 }
             }
@@ -130,7 +133,7 @@ public class Sistema {
     }
 
     public void printaDisiciplinas(int larguraColuna) {
-        if (larguraColuna < 40 || larguraColuna > 100) {
+        if (larguraColuna < 40 || larguraColuna > 80) {
             System.out.println("Largura inválida");
             return;
         }
@@ -170,7 +173,7 @@ public class Sistema {
     }
 
     public void printaTurmas(int larguraColuna) {
-        if (larguraColuna < 40 || larguraColuna > 100) {
+        if (larguraColuna < 40 || larguraColuna > 80) {
             System.out.println("Largura inválida");
             return;
         }
@@ -180,73 +183,93 @@ public class Sistema {
 
         for (int i = 0; i < allTurmas.length; i++) {
             if (allTurmas[i] != null) {
-                for (int j = 0; j < larguraTotal; j++) {
+                for (int j = 0; j < larguraTotal; j++)
                     System.out.print("-");
-                }
                 System.out.println();
 
-                System.out.printf("| %-10s | %-10s | %-" + (larguraConteudo - 24) + "s |\n", "ID TURMA", "ANO",
-                        "VAGAS TOTAIS");
+                int colId = 10;
+                int colAno = 10;
+                int colVagas = larguraConteudo - colId - colAno - 6;
 
-                for (int j = 0; j < larguraTotal; j++) {
+                System.out.printf(
+                        "| %-" + colId + "." + colId + "s | %-" + colAno + "." + colAno + "s | %-" + colVagas + "."
+                                + colVagas + "s |\n",
+                        "ID TURMA", "ANO", "VAGAS TOTAIS");
+
+                for (int j = 0; j < larguraTotal; j++)
                     System.out.print("-");
-                }
                 System.out.println();
 
-                System.out.printf("| %-10d | %-10d | %-" + (larguraConteudo - 24) + "d |\n",
+                System.out.printf("| %-" + colId + "d | %-" + colAno + "d | %-" + colVagas + "d |\n",
                         allTurmas[i].getId(),
                         allTurmas[i].getAno(),
                         allTurmas[i].getQtdVagas());
 
-                for (int j = 0; j < larguraTotal; j++) {
+                for (int j = 0; j < larguraTotal; j++)
                     System.out.print("-");
-                }
                 System.out.println();
 
-                System.out.printf("| %-" + larguraConteudo + "s |\n", "DISCIPLINAS DA TURMA");
-                for (int j = 0; j < larguraTotal; j++) {
+                System.out.printf("| %-" + larguraConteudo + "." + larguraConteudo + "s |\n", "DISCIPLINAS DA TURMA");
+                for (int j = 0; j < larguraTotal; j++)
                     System.out.print("-");
-                }
                 System.out.println();
 
                 Disciplina[] discs = allTurmas[i].getDisciplinas();
                 boolean temDisciplina = false;
                 for (int j = 0; j < discs.length; j++) {
                     if (discs[j] != null) {
-                        System.out.printf("| - %-" + (larguraConteudo - 4) + "s |\n", discs[j].getNomeDisciplina());
+                        int largDisc = larguraConteudo - 4;
+                        System.out.printf("| - %-" + largDisc + "." + largDisc + "s |\n", discs[j].getNomeDisciplina());
                         temDisciplina = true;
                     }
                 }
                 if (!temDisciplina) {
-                    System.out.printf("| %-" + larguraConteudo + "s |\n", "Nenhuma disciplina cadastrada.");
+                    System.out.printf("| %-" + larguraConteudo + "." + larguraConteudo + "s |\n",
+                            "Nenhuma disciplina cadastrada.");
                 }
 
-                for (int j = 0; j < larguraTotal; j++) {
+                for (int j = 0; j < larguraTotal; j++)
                     System.out.print("-");
-                }
                 System.out.println();
 
-                System.out.printf("| %-" + larguraConteudo + "s |\n", "ALUNOS MATRICULADOS");
-                for (int j = 0; j < larguraTotal; j++) {
+                System.out.printf("| %-" + larguraConteudo + "." + larguraConteudo + "s |\n", "ALUNOS MATRICULADOS");
+                for (int j = 0; j < larguraTotal; j++)
                     System.out.print("-");
-                }
                 System.out.println();
 
                 Matricula[] mats = allTurmas[i].getMatriculas();
                 boolean temAluno = false;
+
+                int larguraMat = 10;
+                int larguraMed = 10;
+                int larguraNome = larguraConteudo - larguraMat - larguraMed - 6;
+
+                System.out.printf(
+                        "| %-" + larguraMat + "." + larguraMat + "s | %-" + larguraNome + "." + larguraNome + "s | %-"
+                                + larguraMed + "." + larguraMed + "s |\n",
+                        "MATRÍCULA", "NOME", "MÉDIA(RG)");
+
+                for (int j = 0; j < larguraTotal; j++)
+                    System.out.print("-");
+                System.out.println();
+
                 for (int j = 0; j < mats.length; j++) {
                     if (mats[j] != null && mats[j].getAluno() != null) {
-                        System.out.printf("| - %-" + (larguraConteudo - 4) + "s |\n", mats[j].getAluno().getNome());
+                        Aluno a = mats[j].getAluno();
+                        System.out.printf(
+                                "| %-" + larguraMat + "d | %-" + larguraNome + "." + larguraNome + "s | %-" + larguraMed
+                                        + ".2f |\n",
+                                a.getCodigoAluno(), a.getNome(), a.getRg());
                         temAluno = true;
                     }
                 }
                 if (!temAluno) {
-                    System.out.printf("| %-" + larguraConteudo + "s |\n", "Nenhum aluno matriculado.");
+                    System.out.printf("| %-" + larguraConteudo + "." + larguraConteudo + "s |\n",
+                            "Nenhum aluno matriculado.");
                 }
 
-                for (int j = 0; j < larguraTotal; j++) {
+                for (int j = 0; j < larguraTotal; j++)
                     System.out.print("-");
-                }
                 System.out.println();
                 System.out.println();
             }
@@ -254,35 +277,41 @@ public class Sistema {
     }
 
     public void printaAlunos(int larguraColuna) {
-        if (larguraColuna < 40 || larguraColuna > 100) {
+        if (larguraColuna < 40 || larguraColuna > 80) {
             System.out.println("Largura inválida");
             return;
         }
 
         int larguraTotal = 18 + (larguraColuna * 2);
-        int larguraNome = larguraTotal - 15;
+        int larguraMatricula = 10;
+        int larguraMedia = 10;
 
-        for (int i = 0; i < larguraTotal; i++) {
+        int larguraNome = larguraTotal - larguraMatricula - larguraMedia - 10;
+
+        for (int i = 0; i < larguraTotal; i++)
             System.out.print("-");
-        }
         System.out.println();
 
-        System.out.printf("| %-10s | %-" + larguraNome + "." + larguraNome + "s |\n", "MATRÍCULA", "NOME DO ALUNO");
+        System.out.printf(
+                "| %-" + larguraMatricula + "s | %-" + larguraNome + "." + larguraNome + "s | %-" + larguraMedia
+                        + "s |\n",
+                "MATRÍCULA", "NOME DO ALUNO", "MÉDIA (RG)");
 
-        for (int i = 0; i < larguraTotal; i++) {
+        for (int i = 0; i < larguraTotal; i++)
             System.out.print("-");
-        }
         System.out.println();
 
         for (int i = 0; i < allAlunos.length; i++) {
             if (allAlunos[i] != null) {
-                System.out.printf("| %-10d | %-" + larguraNome + "." + larguraNome + "s |\n",
+                System.out.printf(
+                        "| %-" + larguraMatricula + "d | %-" + larguraNome + "." + larguraNome + "s | %-" + larguraMedia
+                                + ".2f |\n",
                         allAlunos[i].getCodigoAluno(),
-                        allAlunos[i].getNome());
+                        allAlunos[i].getNome(),
+                        allAlunos[i].getRg());
 
-                for (int j = 0; j < larguraTotal; j++) {
+                for (int j = 0; j < larguraTotal; j++)
                     System.out.print("-");
-                }
                 System.out.println();
             }
         }
@@ -352,37 +381,6 @@ public class Sistema {
             }
             limiteAlu--;
         }
-    }
-
-    // Funções de controle
-    private Aluno[] expandirVetorAlunos() {
-        Aluno[] novoVetor = new Aluno[allAlunos.length * 2];
-
-        for (int i = 0; i < allAlunos.length; i++) {
-            novoVetor[i] = allAlunos[i];
-        }
-
-        return novoVetor;
-    }
-
-    private Disciplina[] expandirVetorDisciplinas() {
-        Disciplina[] novoVetor = new Disciplina[allDisciplinas.length + 10];
-
-        for (int i = 0; i < allDisciplinas.length; i++) {
-            novoVetor[i] = allDisciplinas[i];
-        }
-
-        return novoVetor;
-    }
-
-    private Turma[] expandirVetorTurmas() {
-        Turma[] novoVetor = new Turma[allTurmas.length + 5];
-
-        for (int i = 0; i < allTurmas.length; i++) {
-            novoVetor[i] = allTurmas[i];
-        }
-
-        return novoVetor;
     }
 
     public Turma[] getTurmas() {
