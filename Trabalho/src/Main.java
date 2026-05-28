@@ -1,3 +1,4 @@
+
 import java.sql.Date;
 import java.util.Scanner;
 
@@ -56,6 +57,7 @@ public class Main {
 
                     switch (escolha) {
                         case 0:
+                            escolha= -1;
                             break;
                         case 1:
                             scanner.nextLine();
@@ -114,6 +116,7 @@ public class Main {
 
                     switch (escolha) {
                         case 0:
+                            escolha=-1;
                             break;
                         case 1:
                             sis.printaDisiciplinas(larguraColuna);
@@ -143,6 +146,7 @@ public class Main {
 
                     switch (escolha) {
                         case 0:
+                            escolha=-1;
                             break;
                         case 1:
                             sis.printaDisiciplinas(escolha);
@@ -205,6 +209,7 @@ public class Main {
 
                     switch (escolha) {
                         case 0:
+                            escolha=-1;
                             break;
                         case 1:
                             sis.printaDisiciplinas(larguraColuna);
