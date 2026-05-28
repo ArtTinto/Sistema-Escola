@@ -1,3 +1,4 @@
+package escola;
 public class Disciplina {
     private static long qtdDisciplinas = 0;
     private long id;
